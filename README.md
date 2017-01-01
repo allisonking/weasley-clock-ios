@@ -28,18 +28,18 @@ By clicking on one of the 'Set' buttons, for example, the one next to 'School:',
 # Example
 Here are some example run throughs of the code.
 
-# Adding the User's Info
+## Adding the User's Info
 
 
   1. Start up the app and click on the 'My Clock' button.
   2. In my XCode, under Manage Scehems, I have 'Allow Location' checked and the default Location as New York, NY, USA. Click on the 'Set' button next to 'Work:'
-   3. The map view should show the current user location as NYC. Search New York, New York in the search bar and we should zoom in pretty close to the user location.
+  3. The map view should show the current user location as NYC. Search New York, New York in the search bar and we should zoom in pretty close to the user location.
   4. Enter something like 2000 in the radius 
   5. Enter something like NYC under the description
   6. Hit `save'
   7. We should be back at the My Clock screen now. As long as the default location was set as New York, New York, the clock should now display 'Work'.
   8. In the simulator, try changing the Longitude to -74.2. This will likely put your current location outside of the set NYC location. The clock should change to 'Unknown'.
-    9. Try adding other locations through the other 'Set' buttons and changing the locations around! As one example, search 175 South Street, Waltham MA in the search bar and set some radius for this location (I've put 25 before and it worked okay). Then go back to the 'My Clock' screen and change the latitude to 42.370049 and the longitude to -71.250268. This should put the user in the location of 175 South Street, and the clock hand should change accordingly. 
+  9. Try adding other locations through the other 'Set' buttons and changing the locations around! As one example, search 175 South Street, Waltham MA in the search bar and set some radius for this location (I've put 25 before and it worked okay). Then go back to the 'My Clock' screen and change the latitude to 42.370049 and the longitude to -71.250268. This should put the user in the location of 175 South Street, and the clock hand should change accordingly. 
 
 
 All of these saved locations should be saved to NSUserDefaults so the user's location preferences are saved even after the app is closed. Furthermore, each time the user's current location is changed (when a geofence is triggered), the location is written to a database using Parse.
@@ -55,7 +55,8 @@ Now that our own locations are set, we can add other people's too!
 
 
 # Further Work
-I believe I accomplished all of my goals except for determining if the user is traveling. I have an idea for how to do this using the Core Motion framework using \href{https://developer.apple.com/library/ios/documentation/CoreMotion/Reference/CMMotionActivity_class/}{CMMotionActivity} but did not get the chance to implement it.
+I believe I accomplished all of my goals except for determining if the user is traveling. I have an idea for how to do this using the Core Motion framework using [CMMotionActivity](https://developer.apple.com/libr\
+ary/ios/documentation/CoreMotion/Reference/CMMotionActivity_class) but did not get the chance to implement it.
 
 I used navigation through MapKit geofencing, persistence by saving the user settings to NSUserDefaults, and background tasks when fetching data from Parse. I was not able to save which 'friends' the user saved to their All Members Clock table to NSUserDefaults but I believe it would be done in a similar way as I saved the user locations.
 
