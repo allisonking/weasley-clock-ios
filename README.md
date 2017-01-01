@@ -1,6 +1,6 @@
 
 # Overview
-The goal of this app was to implement a ``clock'' that would tell the user the general location of their friends/family. Part of this entailed having the user define what locations like ``home'' and ``work'' were for them. Using geofencing, the app determines when the user is in the user defined location and updates the database of all user info with their current location. Friends who have the user in their ``friend list'' will then be able to see if the user is at ``home'' or at ``work'', for example.
+The goal of this app was to implement a ''clock'' that would tell the user the general location of their friends/family. Part of this entailed having the user define what locations like ''home'' and ''work'' were for them. Using geofencing, the app determines when the user is in the user defined location and updates the database of all user info with their current location. Friends who have the user in their ''friend list'' will then be able to see if the user is at ''home'' or at ''work'', for example.
 
 # How to Use
 ##All Members Clock Screen
