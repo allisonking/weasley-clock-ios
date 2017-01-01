@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "4C3D88C09A033F3BDC0470012BA6D1ADDCD60A27",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "4C3D88C09A033F3BDC0470012BA6D1ADDCD60A27" : 0,
+    "D154E74621FA4FBFA4582BC51111492D2ED20907" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3DBB0997-EF0D-4D4C-A33F-EF4955D68BEB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "4C3D88C09A033F3BDC0470012BA6D1ADDCD60A27" : "aking\/",
+    "D154E74621FA4FBFA4582BC51111492D2ED20907" : "materials\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "aking_finalproject",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "aking_finalproject\/aking_finalproject.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/student.classyswift.com\/aking.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4C3D88C09A033F3BDC0470012BA6D1ADDCD60A27"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/student.classyswift.com\/e65.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D154E74621FA4FBFA4582BC51111492D2ED20907"
+    }
+  ]
+}
