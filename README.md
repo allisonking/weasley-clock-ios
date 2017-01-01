@@ -8,19 +8,19 @@ The goal of this app was to implement a ''clock'' that would tell the user the g
 
 When first starting up the app, there is a picture of a clock, a table view, and a button to edit 'My Clock'. The clock, once friends have been added, will display the name of the friend as well as a color to indicate which clock hand is theirs. The clock hand should show the location the user's current location. 
 
-# Adding a Member Screen
+## Adding a Member Screen
 ![alt text](add_members.png "Adding Members")
 
 When clicking on a cell in the table view, there will be a segue to a table view controller with a list of database entries. These entries are all pulled from Parse, with the ability to pull down on the table to refresh in case something was added while the user was on the screen. The current entries are all names I put into the database already with locations. 
 
 After clicking on a cell in the table view, the 'save' button will become enabled. The highlighted row will be saved when the user clicks `save' and added to the clock view and table view in the All Members Clock view controller. Up to six members can be added (I chose six so that it would not clutter up the clock).
 
-# My Clock Screen
+## My Clock Screen
 ![alt text](my_clock.png "My clock")
 
 When clicking on the button that says 'My Clock' at the bottom of the All Member Clock screen, the user can see their own clock. Next to each location type is a button that says 'Set' if there is no information in it yet, or a description of the user inputted location if the location has been set before. 
 
-# Map View Controller
+## Map View Controller
 ![alt text](map_view.png "Map View")
 
 By clicking on one of the 'Set' buttons, for example, the one next to 'School:', we segue to a map view controller. This map view controller allows us to search for a location. For example, I could search Harvard University and the map should zoom to Harvard. Then, I can set a radius and an overlay should appear on the map indicating the radius that was just inputted. Once a description is entered, the save button will be enabled. By pressing save, the app starts monitoring the geolocation (x meters around Harvard) and when the user enters or exits. The app also saves this location to NSUserDefaults. Upon returning to the My Clock scene, there should be a hand that indicates where the user is. If the user is in the location just set, then the hand should point to 'School'. However, if the user is outside any of the defined locations, then the hand should point to 'Unknown'. 
