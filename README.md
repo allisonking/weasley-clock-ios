@@ -3,7 +3,7 @@
 The goal of this app was to implement a ''clock'' that would tell the user the general location of their friends/family. Part of this entailed having the user define what locations like ''home'' and ''work'' were for them. Using geofencing, the app determines when the user is in the user defined location and updates the database of all user info with their current location. Friends who have the user in their ''friend list'' will then be able to see if the user is at ''home'' or at ''work'', for example.
 
 # How to Use
-##All Members Clock Screen
+## All Members Clock Screen
 ![alt text](all_members.png "Clock tracking members")
 
 When first starting up the app, there is a picture of a clock, a table view, and a button to edit 'My Clock'. The clock, once friends have been added, will display the name of the friend as well as a color to indicate which clock hand is theirs. The clock hand should show the location the user's current location. 
@@ -13,7 +13,7 @@ When first starting up the app, there is a picture of a clock, a table view, and
 
 When clicking on a cell in the table view, there will be a segue to a table view controller with a list of database entries. These entries are all pulled from Parse, with the ability to pull down on the table to refresh in case something was added while the user was on the screen. The current entries are all names I put into the database already with locations. 
 
-After clicking on a cell in the table view, the 'save' button will become enabled. The highlighted row will be saved when the user clicks `save' and added to the clock view and table view in the All Members Clock view controller. Up to six members can be added (I chose six so that it would not clutter up the clock).
+After clicking on a cell in the table view, the 'save' button will become enabled. The highlighted row will be saved when the user clicks 'save' and added to the clock view and table view in the All Members Clock view controller. Up to six members can be added (I chose six so that it would not clutter up the clock).
 
 ## My Clock Screen
 ![alt text](my_clock.png "My clock")
@@ -36,7 +36,7 @@ Here are some example run throughs of the code.
   3. The map view should show the current user location as NYC. Search New York, New York in the search bar and we should zoom in pretty close to the user location.
   4. Enter something like 2000 in the radius 
   5. Enter something like NYC under the description
-  6. Hit `save'
+  6. Hit 'save'
   7. We should be back at the My Clock screen now. As long as the default location was set as New York, New York, the clock should now display 'Work'.
   8. In the simulator, try changing the Longitude to -74.2. This will likely put your current location outside of the set NYC location. The clock should change to 'Unknown'.
   9. Try adding other locations through the other 'Set' buttons and changing the locations around! As one example, search 175 South Street, Waltham MA in the search bar and set some radius for this location (I've put 25 before and it worked okay). Then go back to the 'My Clock' screen and change the latitude to 42.370049 and the longitude to -71.250268. This should put the user in the location of 175 South Street, and the clock hand should change accordingly. 
@@ -48,7 +48,7 @@ All of these saved locations should be saved to NSUserDefaults so the user's loc
 Now that our own locations are set, we can add other people's too!
 
   1. Click on one of the six table cells
-  2. Choose one of the names in the database and click `save'.
+  2. Choose one of the names in the database and click 'save'.
   3. The name that was just clicked should show up in the table view and their location on the clock in the corresponding color
   4. In addition to all of the names, there should be one called 'Tester' too if the first example was followed. 'Tester' is you, and its location should be where you are right now. Try adding 'Tester'
   5. Now, try changing your location to either 'Unknown' or into one of your set geolocations. Because I only pull from Parse on viewDidAppear(), you may have to click into another screen and click back into this screen to see the update. Basically, when your location changes, the parse database entry is updated. However, I did not know how to make the database send a Notification that something in it changed, so I kept the Parse pulling in viewDidAppear() with the intention of adding a refresh option, though I only found how to do this with table view controllers. 
