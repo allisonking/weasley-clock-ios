@@ -16,43 +16,43 @@ class MyClockViewController : UIViewController {
     
     @IBOutlet weak var myHandsView: MyHandsView!
     
-    private var userDataObserver : NSObjectProtocol?
+    fileprivate var userDataObserver : NSObjectProtocol?
     
     deinit {
         if let obs = userDataObserver {
-            NSNotificationCenter.defaultCenter().removeObserver(obs)
+            NotificationCenter.default.removeObserver(obs)
         }
     }
     
     var userModel = AppDel.userModel
     
-    private func updateUI() {
+    fileprivate func updateUI() {
         // update the hand of the clock
         myHandsView.setNeedsDisplay()
         
         // update the button text
-        updateButtonText(workSet, type: .WorkLocation)
-        updateButtonText(homeSet, type: .HomeLocation)
-        updateButtonText(schoolSet, type: .SchoolLocation)
-        updateButtonText(exerciseSet, type: .ExerciseLocation)
+        updateButtonText(workSet, type: .workLocation)
+        updateButtonText(homeSet, type: .homeLocation)
+        updateButtonText(schoolSet, type: .schoolLocation)
+        updateButtonText(exerciseSet, type: .exerciseLocation)
     }
     
     /*
     * If the user has set a location before, set the button to the location's descriptor
     * Otherwise, set the button to say 'Set'
     */
-    private func updateButtonText(button : UIButton, type : LocationType) {
+    fileprivate func updateButtonText(_ button : UIButton, type : LocationType) {
         if let loc = userModel.getLocationInfo(type) {
-            button.setTitle(loc.descriptor, forState: .Normal)
+            button.setTitle(loc.descriptor, for: UIControlState())
         } else {
-            button.setTitle("Set", forState: .Normal)
+            button.setTitle("Set", for: UIControlState())
         }
     }
     
     override func viewDidLoad() {
         // if notification that user location changed was received, update the UI
-        userDataObserver = NSNotificationCenter.defaultCenter().addObserverForName(Messages.UserLocationChanged, object: userModel, queue: NSOperationQueue.mainQueue()) {
-            [weak self] (notification: NSNotification) in
+        userDataObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: Messages.UserLocationChanged), object: userModel, queue: OperationQueue.main) {
+            [weak self] (notification: Notification) in
             self?.updateUI()
         }
         
@@ -62,7 +62,7 @@ class MyClockViewController : UIViewController {
     }
     
     // MARK: Prepare for segue
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // the destination view controller needs to know which location it is working with
         var locationToChange : LocationType
         
@@ -72,20 +72,20 @@ class MyClockViewController : UIViewController {
         }
         
         // get the next view (destination view controller)
-        guard let editLocationVC = segue.destinationViewController as? MapViewController else {
-            preconditionFailure("Wrong destination type: \(segue.destinationViewController)")
+        guard let editLocationVC = segue.destination as? MapViewController else {
+            preconditionFailure("Wrong destination type: \(segue.destination)")
         }
         
         // set the type of location based on which button was pressed
         switch tappedButton {
         case workSet:
-            locationToChange = .WorkLocation
+            locationToChange = .workLocation
         case homeSet :
-            locationToChange = .HomeLocation
+            locationToChange = .homeLocation
         case schoolSet:
-            locationToChange = .SchoolLocation
+            locationToChange = .schoolLocation
         case exerciseSet:
-            locationToChange = .ExerciseLocation
+            locationToChange = .exerciseLocation
         default :
             preconditionFailure("Unexpected button press segue")
         }
@@ -95,7 +95,7 @@ class MyClockViewController : UIViewController {
         
         // change the name of the button to the descriptor of the location the user put in
         editLocationVC.commitDescriptor = { (descriptor : String) in
-            tappedButton.setTitle(descriptor, forState: .Normal)
+            tappedButton.setTitle(descriptor, for: UIControlState())
         }
         
     }

@@ -13,15 +13,15 @@ import Foundation
 class SocialClockData {
     var allUserInfo : [UserInfo?] {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: Messages.FriendDataChanged, object: self))
+            NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: Messages.FriendDataChanged), object: self))
         }
     }
     
     init(){
-        allUserInfo = [UserInfo?](count : totalMembersPossible, repeatedValue: nil)
+        allUserInfo = [UserInfo?](repeating: nil, count: totalMembersPossible)
     }
     
-    func addUser(row : Int, data : UserInfo ) {
+    func addUser(_ row : Int, data : UserInfo ) {
         if row < totalMembersPossible {
             allUserInfo[row] = data
         }

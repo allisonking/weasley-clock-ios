@@ -15,11 +15,11 @@ struct Point {
 }
 
 enum LocationType : Int{
-    case WorkLocation
-    case SchoolLocation
-    case ExerciseLocation
-    case HomeLocation
-    case Unknown
+    case workLocation
+    case schoolLocation
+    case exerciseLocation
+    case homeLocation
+    case unknown
 }
 
 // idea from http://redqueencoder.com/property-lists-and-user-defaults-in-swift/
@@ -35,8 +35,8 @@ struct LocationInfo : PropertyListReadable {
     let identifier : String
     
     func propertyListRepresentation() -> NSDictionary {
-        let representation : [String : AnyObject] = ["latitude" : coordinate.latitude, "longitude" : coordinate.longitude, "radius" : radius , "descriptor" : descriptor, "identifier" : identifier]
-        return representation
+        let representation : [String : AnyObject] = ["latitude" : coordinate.latitude as AnyObject, "longitude" : coordinate.longitude as AnyObject, "radius" : radius as AnyObject , "descriptor" : descriptor as AnyObject, "identifier" : identifier as AnyObject]
+        return representation as NSDictionary
     }
     
     init(coordinate : CLLocationCoordinate2D, radius: Double, descriptor : String, identifier : String) {
@@ -51,10 +51,10 @@ struct LocationInfo : PropertyListReadable {
             return nil
         }
         if let lat = values["latitude"] as? Double,
-            lon = values["longitude"] as? Double,
-            rad = values["radius"] as? Double,
-            desc = values["descriptor"] as? String,
-            id = values["identifier"] as? String {
+            let lon = values["longitude"] as? Double,
+            let rad = values["radius"] as? Double,
+            let desc = values["descriptor"] as? String,
+            let id = values["identifier"] as? String {
                 let coord = CLLocationCoordinate2DMake(lat, lon)
                 self.coordinate = coord
                 self.radius = rad
@@ -74,19 +74,19 @@ let currentLocationKey = "currentLocation"
 class ClockData : NSObject, NSCoding {
     var myUserInfo : UserInfo?
     let obj = PFObject(className: "aking_UserInfo")
-    private var locations : [LocationInfo?] = Array(count: numLocations, repeatedValue: nil)
+    fileprivate var locations : [LocationInfo?] = Array(repeating: nil, count: numLocations)
     
     // default as unknown location
-    var currentLocation : LocationType = .Unknown {
+    var currentLocation : LocationType = .unknown {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: Messages.UserLocationChanged, object: self))
+            NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: Messages.UserLocationChanged), object: self))
             // see if there is user info existing
             if let info = myUserInfo {
                 // if there is user info, then update it in parse
                 if currentLocation != oldValue {
                     // update the entry
                     let query = PFQuery(className: "aking_UserInfo")
-                    query.getObjectInBackgroundWithId(info.objID) { [weak self] (object, error) -> Void in
+                    query.getObjectInBackground(withId: info.objID) { [weak self] (object, error) -> Void in
                         guard let s = self else {
                             // not really sure what to do here...
                             print("clock data dismissed???")
@@ -127,14 +127,14 @@ class ClockData : NSObject, NSCoding {
     required init?(coder aDecoder: NSCoder) {
         for locationID in 0..<locations.count {
             let key = "loc" + String(locationID)
-            if let loc = aDecoder.decodeObjectForKey(key) as? NSDictionary {
+            if let loc = aDecoder.decodeObject(forKey: key) as? NSDictionary {
                 locations[locationID] = LocationInfo(propertyListRepresentation: loc)
             } else {
                 locations[locationID] = nil
             }
         }
         
-        if let info = aDecoder.decodeObjectForKey(myUserInfoSaveKey) as? NSDictionary {
+        if let info = aDecoder.decodeObject(forKey: myUserInfoSaveKey) as? NSDictionary {
             myUserInfo = UserInfo(propertyListRepresentation: info)
         } else {
             myUserInfo = nil
@@ -144,25 +144,25 @@ class ClockData : NSObject, NSCoding {
     }
     
     // Control exactly how this object will be saved to disk
-    func encodeWithCoder(aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         for locationID in 0..<locations.count {
             let key = "loc" + String(locationID)
-            aCoder.encodeObject(locations[locationID]?.propertyListRepresentation(), forKey: key)
+            aCoder.encode(locations[locationID]?.propertyListRepresentation(), forKey: key)
         }
         //aCoder.encodeObject(currentLocation?.rawValue, forKey: currentLocationKey)
-        aCoder.encodeObject(myUserInfo?.propertyListRepresentation(), forKey: myUserInfoSaveKey)
+        aCoder.encode(myUserInfo?.propertyListRepresentation(), forKey: myUserInfoSaveKey)
     }
     
-    func setALocation(type : LocationType, locationInfo : LocationInfo) {
+    func setALocation(_ type : LocationType, locationInfo : LocationInfo) {
         locations[type.rawValue] = locationInfo
 
     }
     
-    func getLocationInfo(type : LocationType) -> LocationInfo? {
+    func getLocationInfo(_ type : LocationType) -> LocationInfo? {
         return locations[type.rawValue]
     }
     
-    func getLocationTypeFromIdentifier(identifier : String) -> LocationType? {
+    func getLocationTypeFromIdentifier(_ identifier : String) -> LocationType? {
         for locationID in 0..<locations.count {
 
             if locations[locationID]?.identifier == identifier {
@@ -175,17 +175,17 @@ class ClockData : NSObject, NSCoding {
 
 }
 
-func getCoordinatesFromLocationType(type : LocationType ) -> Point {
+func getCoordinatesFromLocationType(_ type : LocationType ) -> Point {
     switch type {
-    case .WorkLocation :
+    case .workLocation :
         return Point(xcoord: 0.0, ycoord: 1.0)
-    case .SchoolLocation :
+    case .schoolLocation :
         return Point(xcoord: sqrt(3)/2, ycoord: 0.5)
-    case .ExerciseLocation :
+    case .exerciseLocation :
         return Point(xcoord: -sqrt(3)/2, ycoord: -0.5)
-    case .HomeLocation :
+    case .homeLocation :
         return Point(xcoord: 0.0, ycoord: -1.0)
-    case .Unknown :
+    case .unknown :
         return Point(xcoord: -sqrt(3)/2, ycoord: 0.5)
         // traveling: return Point(xcoord: sqrt(3)/2, ycoord: -0.5)
     }

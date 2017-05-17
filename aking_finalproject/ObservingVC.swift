@@ -8,22 +8,22 @@
 
 import UIKit
 
-func globalErrorAlert(vc: UIViewController, message: String, title: String = "Alert", completion: (() -> ())? = nil) {
+func globalErrorAlert(_ vc: UIViewController, message: String, title: String = "Alert", completion: (() -> ())? = nil) {
     //Util.log("User was alerted: \(message)")
-    let alertBox = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-    alertBox.addAction(UIAlertAction(title: "OK", style: .Default, handler: { _ in completion?() }))
-    vc.presentViewController(alertBox, animated: true, completion: nil)
+    let alertBox = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alertBox.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in completion?() }))
+    vc.present(alertBox, animated: true, completion: nil)
 }
 
 
 class ObservingVC: UIViewController {
-    func errorAlert( message: String, title: String = "Alert", completion: (() -> ())? = nil) {
+    func errorAlert( _ message: String, title: String = "Alert", completion: (() -> ())? = nil) {
         globalErrorAlert(self, message: message, title: title, completion: completion)
     }
 }
 
 class ObservingTVC: UITableViewController {
-    func errorAlert( message: String, title: String = "Alert", completion: (() -> ())? = nil) {
+    func errorAlert( _ message: String, title: String = "Alert", completion: (() -> ())? = nil) {
         globalErrorAlert(self, message: message, title: title, completion: completion)
     }
 }

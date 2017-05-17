@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>891399939118-qg54pfc1l13q8eonc855bro292tb2jnb.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.891399939118-qg54pfc1l13q8eonc855bro292tb2jnb</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB30yYFtv-k87Y7XMUf-VhGMTSm8Fn9xyI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>891399939118</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>e65.assignment.aking-finalproject</string>
+	<key>PROJECT_ID</key>
+	<string>weasley-clock-74f37</string>
+	<key>STORAGE_BUCKET</key>
+	<string>weasley-clock-74f37.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:891399939118:ios:b0ebeab9c0e2ba18</string>
+	<key>DATABASE_URL</key>
+	<string>https://weasley-clock-74f37.firebaseio.com</string>
+</dict>
+</plist>

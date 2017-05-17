@@ -29,9 +29,9 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     // closure- context in MyClockViewController
-    var commitDescriptor: (String -> Void)?
+    var commitDescriptor: ((String) -> Void)?
     
-    @IBAction func savePressed(sender: AnyObject) {
+    @IBAction func savePressed(_ sender: AnyObject) {
         guard let type = typeOfLocation else {
             preconditionFailure("Parent VC forgot to initialize our model :(")
         }
@@ -45,14 +45,13 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         let coordinate = mapView.centerCoordinate
         let radius = (radiusTextField.text! as NSString).doubleValue
         let descriptor = descriptorTextField.text!
-        let identifier = NSUUID().UUIDString
+        let identifier = UUID().uuidString
         
         // fill it all into a location info
         let locationInfo = LocationInfo(coordinate: coordinate, radius: radius, descriptor: descriptor, identifier: identifier)
         
         // update the model
         userModel.setALocation(type, locationInfo: locationInfo)
-
         
         startMonitoring(locationInfo)
         
@@ -60,13 +59,13 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         
         saveRegions()
         
-        navigationController?.popViewControllerAnimated(true)
+        _=self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func descriptionEdited(sender: AnyObject) {
-        saveButton.enabled = checkIfFieldsFilledIn()
+    @IBAction func descriptionEdited(_ sender: AnyObject) {
+        saveButton.isEnabled = checkIfFieldsFilledIn()
     }
-    @IBAction func radiusEdited(sender: AnyObject) {
+    @IBAction func radiusEdited(_ sender: AnyObject) {
 
         // remove any existing overlays first
         removeOverlaysFromMap()
@@ -74,13 +73,13 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         // create the new one
         addOverlayToMap()
         
-        saveButton.enabled = checkIfFieldsFilledIn()
+        saveButton.isEnabled = checkIfFieldsFilledIn()
     }
     
     func saveRegions() {
-        let item = NSKeyedArchiver.archivedDataWithRootObject(userModel)
-        NSUserDefaults.standardUserDefaults().setObject(item, forKey: saveKey)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        let item = NSKeyedArchiver.archivedData(withRootObject: userModel)
+        UserDefaults.standard.set(item, forKey: saveKey)
+        UserDefaults.standard.synchronize()
         print("save successful!")
     }
     
@@ -96,13 +95,13 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
     
     func addOverlayToMap() {
         let radius = (radiusTextField.text! as NSString).doubleValue
-        let circleOverlay = MKCircle(centerCoordinate: mapView.centerCoordinate, radius: radius)
-        mapView.addOverlay(circleOverlay)
+        let circleOverlay = MKCircle(center: mapView.centerCoordinate, radius: radius)
+        mapView.add(circleOverlay)
     }
     
     func removeOverlaysFromMap() {
         for overlay in mapView.overlays {
-            mapView.removeOverlay(overlay)
+            mapView.remove(overlay)
         }
     }
     
@@ -123,7 +122,7 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
             
         }
         
-        saveButton.enabled = checkIfFieldsFilledIn()
+        saveButton.isEnabled = checkIfFieldsFilledIn()
         
     }
     
@@ -135,14 +134,15 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
     // MARK: functions for geofencing
     
     // get the region from the location
-    func getRegionFromLocationInfo(loc : LocationInfo) -> CLCircularRegion {
+    func getRegionFromLocationInfo(_ loc : LocationInfo) -> CLCircularRegion {
         let reg = CLCircularRegion(center: loc.coordinate, radius: loc.radius, identifier: loc.identifier)
         reg.notifyOnEntry = true
         reg.notifyOnExit = true
         return reg
     }
     
-    func startMonitoring(var loc : LocationInfo) {
+    func startMonitoring(_ loc : LocationInfo) {
+        var loc = loc
         guard let type = typeOfLocation else {
             preconditionFailure("parent forgot to say what type we were")
         }
@@ -156,10 +156,10 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         }
 
         region = getRegionFromLocationInfo(loc)
-        locationManager?.startMonitoringForRegion(region!)
+        locationManager?.startMonitoring(for: region!)
         
         
-        if (region!.containsCoordinate(mapView.userLocation.coordinate)) {
+        if (region!.contains(mapView.userLocation.coordinate)) {
             userModel.currentLocation = type
         }
         else {
@@ -168,13 +168,13 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         
     }
     
-    func stopMonitoring(loc : LocationInfo) {
+    func stopMonitoring(_ loc : LocationInfo) {
         // loop through the regions and delete the correct one
         if let locManager = locationManager {
             for region in locManager.monitoredRegions {
                 if let circularRegion = region as? CLCircularRegion {
                     if circularRegion.identifier == loc.identifier {
-                        locationManager?.stopMonitoringForRegion(circularRegion)
+                        locationManager?.stopMonitoring(for: circularRegion)
                     }
                 }
             }
@@ -193,7 +193,7 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         searchBar!.delegate = self
         mapView.delegate = self
         locationManager = AppDel.locationManager
-        if CLLocationManager.authorizationStatus() == .AuthorizedAlways {
+        if CLLocationManager.authorizationStatus() == .authorizedAlways {
             mapView.showsUserLocation = true
         }
         
@@ -202,24 +202,24 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
     
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         locationManager?.requestAlwaysAuthorization()
     }
     
     // dismisses the keyboard after finished editing a text field
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
     
     // MARK: Map View Delegate for how to draw overlay
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: overlay)
             circleRenderer.lineWidth = 1.0
-            circleRenderer.strokeColor = UIColor.blueColor()
-            circleRenderer.fillColor = UIColor.blueColor().colorWithAlphaComponent(0.4)
+            circleRenderer.strokeColor = UIColor.blue
+            circleRenderer.fillColor = UIColor.blue.withAlphaComponent(0.4)
             return circleRenderer
         }
         else {
@@ -227,7 +227,7 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         }
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let search = localSearch {
             search.cancel()
         }
@@ -236,10 +236,10 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         request.naturalLanguageQuery = searchBar.text
         
         localSearch = MKLocalSearch(request: request)
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        localSearch!.startWithCompletionHandler { [weak self] (response: MKLocalSearchResponse?, error: NSError?) -> Void in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        localSearch!.start{ [weak self] (response: MKLocalSearchResponse?, error: Error?) -> Void in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             guard let response = response else {
                 print("error in search: \(error?.localizedDescription ?? MissingError)")
                 return
@@ -256,7 +256,7 @@ class MapViewController : UIViewController, UISearchBarDelegate, MKMapViewDelega
         
     }
     
-    func updateMap(item: MKMapItem, region: MKCoordinateRegion) {
+    func updateMap(_ item: MKMapItem, region: MKCoordinateRegion) {
         mapView.setRegion(region, animated: true)
     }
     

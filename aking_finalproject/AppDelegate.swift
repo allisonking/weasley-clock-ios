@@ -15,7 +15,7 @@ let allFriendsSaveKey = "allFriends"
 
 var AppDel : AppDelegate {
     get {
-        return UIApplication.sharedApplication().delegate as! AppDelegate
+        return UIApplication.shared.delegate as! AppDelegate
     }
 }
 
@@ -23,23 +23,23 @@ var AppDel : AppDelegate {
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
-    private var checkLocations = false
+    fileprivate var checkLocations = false
     
-    private var _userModel = ClockData()
+    fileprivate var _userModel = ClockData()
     var userModel : ClockData {
         get {
             return _userModel
         }
     }
     
-    private var _socialModel = SocialClockData()
+    fileprivate var _socialModel = SocialClockData()
     var socialModel : SocialClockData {
         get {
             return _socialModel
         }
     }
     
-    private var _myUserInfo : UserInfo? = nil
+    fileprivate var _myUserInfo : UserInfo? = nil
     var myUserInfo : UserInfo? {
         get {
             return _myUserInfo
@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var myLocation : CLLocation?
     
     // MARK: location manager delegate
-    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {
             print("geofence entered")
         }
@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         print("from exit geofence: \(myLocation)")
     }
     
-    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
 
         if region is CLCircularRegion {
             print("geofence exited")
@@ -73,24 +73,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-    func locationManager(manager: CLLocationManager, didDetermineState state: CLRegionState, forRegion region: CLRegion) {
-        if region is CLCircularRegion && state == .Inside {
+    func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+        if region is CLCircularRegion && state == .inside {
             print("I am in the region \(userModel.getLocationTypeFromIdentifier(region.identifier))")
             // update the model!
             if let loc = userModel.getLocationTypeFromIdentifier(region.identifier) {
                 userModel.currentLocation = loc
             }
             else {
-                userModel.currentLocation = .Unknown
+                userModel.currentLocation = .unknown
             }
         }
     }
 
-    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         print("Monitoring failed for region with identifier: \(region!.identifier)")
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         myLocation = locations[0]
         print("I am at \(myLocation)")
         
@@ -102,15 +102,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("I failed to get location because: \(error.localizedDescription)")
     }
     
-    func checkAndSetLocations(loc : CLLocationCoordinate2D) {
+    func checkAndSetLocations(_ loc : CLLocationCoordinate2D) {
         var unknownLocation = true
         for area in locationManager.monitoredRegions {
             if let a = area as? CLCircularRegion {
-                if a.containsCoordinate(loc) {
+                if a.contains(loc) {
                     unknownLocation = false
                     // might want to do radius checking too...
                     if let loc = userModel.getLocationTypeFromIdentifier(a.identifier) {
@@ -122,13 +122,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         
         if unknownLocation {
-            userModel.currentLocation = .Unknown
+            userModel.currentLocation = .unknown
         }
     }
     
     func loadAllRegions() {
-        if let savedObj = NSUserDefaults.standardUserDefaults().objectForKey(saveKey) {
-            if let data = NSKeyedUnarchiver.unarchiveObjectWithData(savedObj as! NSData) as? ClockData {
+        if let savedObj = UserDefaults.standard.object(forKey: saveKey) {
+            if let data = NSKeyedUnarchiver.unarchiveObject(with: savedObj as! Data) as? ClockData {
                 print("got something!")
                 _userModel = data
                 
@@ -142,7 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
   
     }
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         loadAllRegions()
@@ -156,35 +156,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //locationManager.startUpdatingLocation()
         // Override point for customization after application launch.
         
-        let configuration = ParseClientConfiguration {
+        /*let configuration = ParseClientConfiguration {
             $0.applicationId = "Spring2016"
             $0.clientKey = "E65Parse"
             $0.server = "http://student.classyswift.com:1337/parse"
         }
-        Parse.initializeWithConfiguration(configuration) 
+        Parse.initialize(with: configuration)*/
+        
+        FIRApp.configure()
        
         return true
     }
 
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 

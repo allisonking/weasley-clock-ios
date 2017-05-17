@@ -12,11 +12,11 @@ import UIKit
 class AllHandsView : UIView {
     let offset = 0.75
     let adjustRatio = 0.1
-    private var userDataObserver : NSObjectProtocol?
+    fileprivate var userDataObserver : NSObjectProtocol?
     
     var socialModel : SocialClockData?
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // make sure we have the model
         guard let model = socialModel else {
             preconditionFailure("parent did not instantiate user model!")
@@ -33,7 +33,7 @@ class AllHandsView : UIView {
         
     }
     
-    func drawHand(currentLocation : LocationType, lengthOffset : Double) {
+    func drawHand(_ currentLocation : LocationType, lengthOffset : Double) {
         // get the coordinates for a certain location type (i.e. 'Work' should point straight up)
         let modifier = getCoordinatesFromLocationType(currentLocation)
         
@@ -49,8 +49,8 @@ class AllHandsView : UIView {
         
         // draw the clock hand
         let clockHand = UIBezierPath()
-        clockHand.moveToPoint(CGPoint(x: centerX, y: centerY))
-        clockHand.addLineToPoint(CGPoint(x: Double(centerX) + radius * modifier.xcoord, y: Double(centerY) + radius * modifier.ycoord))
+        clockHand.move(to: CGPoint(x: centerX, y: centerY))
+        clockHand.addLine(to: CGPoint(x: Double(centerX) + radius * modifier.xcoord, y: Double(centerY) + radius * modifier.ycoord))
         //UIColor.blackColor().set()
         clockHand.lineWidth = 3
         clockHand.stroke()
@@ -58,21 +58,21 @@ class AllHandsView : UIView {
     
 }
 
-func getColorFromIndex(index : Int) -> UIColor {
+func getColorFromIndex(_ index : Int) -> UIColor {
     switch index {
     case 0:
-        return UIColor.redColor()
+        return UIColor.red
     case 1:
-        return UIColor.orangeColor()
+        return UIColor.orange
     case 2:
-        return UIColor.yellowColor()
+        return UIColor.yellow
     case 3:
-        return UIColor.greenColor()
+        return UIColor.green
     case 4:
-        return UIColor.blueColor()
+        return UIColor.blue
     case 5:
-        return UIColor.purpleColor()
+        return UIColor.purple
     default :
-        return UIColor.blackColor()
+        return UIColor.black
     }
 }

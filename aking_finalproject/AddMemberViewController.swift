@@ -14,35 +14,35 @@ class AddMemberViewController : ObservingTVC {
     var selectedRow : Int?
     @IBOutlet weak var addButton: UIBarButtonItem!
     
-    @IBAction func addButtonPressed(sender: AnyObject) {
+    @IBAction func addButtonPressed(_ sender: AnyObject) {
         guard let membersRow = editingRow else {
             preconditionFailure("parent forgot to instantiate editing row!")
         }
         if let index = selectedRow {
             let user = users[index]
-            guard let name = user["name"] as? String, location = user["location"] as? Int else {
+            guard let name = user["name"] as? String, let location = user["location"] as? Int else {
                 errorAlert("User data at row \(index) is missing or wrong type")
                 return
             }
             let userInfo = UserInfo(currentLocation : LocationType(rawValue: location)!, name : name, objID : user.objectId!)
             model.addUser(membersRow, data: userInfo)
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         } else {
             preconditionFailure("row not selected- how did add button get enabled?")
         }
         
     }
   
-    @IBAction func refresh(sender: UIRefreshControl) {
+    @IBAction func refresh(_ sender: UIRefreshControl) {
         reloadDataFromParse()
         sender.endRefreshing()
     }
     let model = AppDel.socialModel
     
     // delete this later
-    func deleteFromDatabase(id : String) {
+    func deleteFromDatabase(_ id : String) {
         let query = PFQuery(className: "aking_UserInfo")
-        query.getObjectInBackgroundWithId(id) { (user, error) -> Void in
+        query.getObjectInBackground(withId: id) { (user, error) -> Void in
             user?.deleteEventually()
         }
     }
@@ -52,7 +52,7 @@ class AddMemberViewController : ObservingTVC {
         reloadDataFromParse()
         
         // disable the add button (enabled by user choosing a table cell)
-        addButton.enabled = false
+        addButton.isEnabled = false
         
 /*
         let obj = PFObject(className: "aking_UserInfo")
@@ -91,7 +91,7 @@ class AddMemberViewController : ObservingTVC {
         let query = PFQuery(className: "aking_UserInfo")
         
         // All this nice packaging is STILL on the background network thread
-        query.findObjectsInBackgroundWithBlock { [weak self] (objects, error) -> Void in
+        query.findObjectsInBackground { [weak self] (objects, error) -> Void in
             guard let s = self else {
                 print("VC was dismissed before results arrived")
                 return
@@ -104,7 +104,7 @@ class AddMemberViewController : ObservingTVC {
                 s.errorAlert("Parse reported no error, but could not unpack results as PFObject array")
                 return
             }
-            NSOperationQueue.mainQueue().addOperationWithBlock {
+            OperationQueue.main.addOperation {
                 // Data model should only be manipulated on one thread too.
                 // So if initialized/read from 'main' thread, write to it
                 // ONLY on the 'main' thread.
@@ -116,16 +116,16 @@ class AddMemberViewController : ObservingTVC {
         }
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("AddCell") else {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AddCell") else {
             preconditionFailure("Failed to create a reusable cell")
         }
         let row = indexPath.row
@@ -139,8 +139,8 @@ class AddMemberViewController : ObservingTVC {
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRow = indexPath.row
-        addButton.enabled = true
+        addButton.isEnabled = true
     }
 }

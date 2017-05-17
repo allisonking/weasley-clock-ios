@@ -16,11 +16,11 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var memberTableView: UITableView!
     var model = AppDel.socialModel
     
-    private var allDataObserver : NSObjectProtocol?
+    fileprivate var allDataObserver : NSObjectProtocol?
     
     deinit {
         if let obs = allDataObserver {
-            NSNotificationCenter.defaultCenter().removeObserver(obs)
+            NotificationCenter.default.removeObserver(obs)
         }
     }
     
@@ -38,13 +38,13 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
                 /*query.getObjectWithId((u.objID)) { [weak self] (object, error) -> Void in*/
                 do {
                     let obj = try query.getObjectWithId(u.objID)
-                    guard let name = obj["name"] as? String, location = obj["location"] as? Int else {
+                    guard let name = obj["name"] as? String, let location = obj["location"] as? Int else {
                         print("User data at row \(index) is missing or wrong type")
                         return
                     }
                     let userInfo = UserInfo(currentLocation : LocationType(rawValue: location)!, name : name, objID : u.objID)
                     model.allUserInfo[index] = userInfo
-                    index++
+                    index += 1
                 }
                 catch let e as NSError {
                     print(e.localizedDescription)
@@ -77,8 +77,8 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        allDataObserver = NSNotificationCenter.defaultCenter().addObserverForName(Messages.FriendDataChanged, object: model, queue: NSOperationQueue.mainQueue()) {
-            [weak self] (notification: NSNotification) in
+        allDataObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: Messages.FriendDataChanged), object: model, queue: OperationQueue.main) {
+            [weak self] (notification: Notification) in
             self?.updateUI()
         }
         allHandsView.socialModel = AppDel.socialModel
@@ -87,7 +87,7 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         pullDataFromParse()
         updateUI()
     }
@@ -98,8 +98,8 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
     }
     
     // MARK: Prepare for segue
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let addMemberController = segue.destinationViewController as? AddMemberViewController  {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let addMemberController = segue.destination as? AddMemberViewController  {
             var editingRow : Int
             if let tappedCell = sender as? UITableViewCell {
                 editingRow = tappedCell.tag
@@ -113,16 +113,16 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
     }
     
     // MARK: Tableview delegate/datasource methods
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return totalMembersPossible
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCellWithIdentifier("MemberCell") else {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MemberCell") else {
             preconditionFailure("Failed to create a reusable cell")
         }
         let row = indexPath.row

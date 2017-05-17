@@ -14,8 +14,8 @@ struct UserInfo : PropertyListReadable {
     let objID : String
     
     func propertyListRepresentation() -> NSDictionary {
-        let representation : [String : AnyObject] = ["currentLocation" : currentLocation.rawValue, "name" : name, "objID" : objID]
-        return representation
+        let representation : [String : AnyObject] = ["currentLocation" : currentLocation.rawValue as AnyObject, "name" : name as AnyObject, "objID" : objID as AnyObject]
+        return representation as NSDictionary
     }
     
     init(currentLocation : LocationType, name : String, objID : String) {
@@ -29,8 +29,8 @@ struct UserInfo : PropertyListReadable {
             return nil
         }
         if let currentLocationRaw = values["currentLocation"] as? Int,
-            name = values["name"] as? String,
-            objID = values["objID"] as? String {
+            let name = values["name"] as? String,
+            let objID = values["objID"] as? String {
                 let currentLocation = LocationType(rawValue: currentLocationRaw)!
                 self.currentLocation = currentLocation
                 self.name = name
