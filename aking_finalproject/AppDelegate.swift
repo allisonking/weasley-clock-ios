@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import Firebase
 
 let saveKey = "userClockData"
 let myUserInfoSaveKey = "myUserInfo"
@@ -163,7 +164,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         Parse.initialize(with: configuration)*/
         
-        FIRApp.configure()
+        FirebaseApp.configure()
        
         return true
     }

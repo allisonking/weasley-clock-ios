@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import Firebase
 
 struct Point {
     let xcoord : Double
@@ -21,6 +22,7 @@ enum LocationType : Int{
     case homeLocation
     case unknown
 }
+
 
 // idea from http://redqueencoder.com/property-lists-and-user-defaults-in-swift/
 protocol PropertyListReadable {
@@ -72,8 +74,9 @@ struct LocationInfo : PropertyListReadable {
 let numLocations = 6 // including travel and unknown- should be the same size as the number of location types
 let currentLocationKey = "currentLocation"
 class ClockData : NSObject, NSCoding {
+    let ref = Database.database().reference(withPath: "user-info")
     var myUserInfo : UserInfo?
-    let obj = PFObject(className: "aking_UserInfo")
+    //let obj = PFObject(className: "aking_UserInfo")
     fileprivate var locations : [LocationInfo?] = Array(repeating: nil, count: numLocations)
     
     // default as unknown location
@@ -85,7 +88,7 @@ class ClockData : NSObject, NSCoding {
                 // if there is user info, then update it in parse
                 if currentLocation != oldValue {
                     // update the entry
-                    let query = PFQuery(className: "aking_UserInfo")
+                    /*let query = PFQuery(className: "aking_UserInfo")
                     query.getObjectInBackground(withId: info.objID) { [weak self] (object, error) -> Void in
                         guard let s = self else {
                             // not really sure what to do here...
@@ -100,17 +103,23 @@ class ClockData : NSObject, NSCoding {
                             result["location"] = s.currentLocation.rawValue
                             result.saveInBackground()
                         }
-                    }
+                    }*/
+                    print("update info")
+
+                    
                 }
             }
             else {
                 // otherwise, save to parse
-                obj.setValue(currentLocation.rawValue, forKey: "location")
-                obj.setValue("Tester", forKey: "name")
-                
+                //obj.setValue(currentLocation.rawValue, forKey: "location")
+                //obj.setValue("Tester", forKey: "name")
+                let userInfo = UserInfo(currentLocation: currentLocation, name: "Me", objID: "Me")
+                let userInfoRef = self.ref.child(userInfo.name)
+                userInfoRef.setValue(userInfo.propertyListRepresentation())
                 do {
-                    try obj.save()
-                    myUserInfo = UserInfo(currentLocation: currentLocation, name: "Tester", objID: obj.objectId!)
+                    //try obj.save()
+//                    myUserInfo = UserInfo(currentLocation: currentLocation, name: "Tester", objID: obj.objectId!)
+                    myUserInfo = UserInfo(currentLocation: currentLocation, name: "Tester", objID: "Me")
                 }
                 catch let e as NSError {
                     print(e.localizedDescription)
