@@ -74,7 +74,7 @@ struct LocationInfo : PropertyListReadable {
 let numLocations = 6 // including travel and unknown- should be the same size as the number of location types
 let currentLocationKey = "currentLocation"
 class ClockData : NSObject, NSCoding {
-    let ref = Database.database().reference(withPath: "user-info")
+    var ref: DatabaseReference!
     var myUserInfo : UserInfo?
     //let obj = PFObject(className: "aking_UserInfo")
     fileprivate var locations : [LocationInfo?] = Array(repeating: nil, count: numLocations)
@@ -87,6 +87,7 @@ class ClockData : NSObject, NSCoding {
             if let info = myUserInfo {
                 // if there is user info, then update it in parse
                 if currentLocation != oldValue {
+                    print(info)
                     // update the entry
                     /*let query = PFQuery(className: "aking_UserInfo")
                     query.getObjectInBackground(withId: info.objID) { [weak self] (object, error) -> Void in
@@ -113,6 +114,7 @@ class ClockData : NSObject, NSCoding {
                 // otherwise, save to parse
                 //obj.setValue(currentLocation.rawValue, forKey: "location")
                 //obj.setValue("Tester", forKey: "name")
+                ref = Database.database().reference(withPath: "user-info")
                 let userInfo = UserInfo(currentLocation: currentLocation, name: "Me", objID: "Me")
                 let userInfoRef = self.ref.child(userInfo.name)
                 userInfoRef.setValue(userInfo.propertyListRepresentation())

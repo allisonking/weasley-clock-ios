@@ -30,8 +30,9 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
     }
     
     func pullDataFromParse() {
+        print ("Pulling data from Parse... not!")
         // need to iterate through the saved users
-        let query = PFQuery(className: "aking_UserInfo")
+        /*let query = PFQuery(className: "aking_UserInfo")
         var index = 0
         for user in model.allUserInfo {
             if let u = user {
@@ -72,7 +73,7 @@ class ClockViewController: ObservingVC, UITableViewDelegate, UITableViewDataSour
                 
             }
             
-        }
+        }*/
     }
     
     override func viewDidLoad() {

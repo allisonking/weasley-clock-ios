@@ -19,6 +19,7 @@
 		D684C9C31CCD786100943C16 /* AllHandsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684C9C21CCD786100943C16 /* AllHandsView.swift */; };
 		D684C9C61CCDB14300943C16 /* AddMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684C9C51CCDB14300943C16 /* AddMemberViewController.swift */; };
 		D691E8191CD05098008BA17B /* ObservingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D691E8181CD05098008BA17B /* ObservingVC.swift */; };
+		D697F22F1EDCAFE500638AFA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D697F22E1EDCAFE500638AFA /* GoogleService-Info.plist */; };
 		D6AA9B011CB96F3700BEC2A5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AA9B001CB96F3700BEC2A5 /* MapViewController.swift */; };
 		D6AA9B071CB986AB00BEC2A5 /* ClockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AA9B061CB986AB00BEC2A5 /* ClockData.swift */; };
 		D6AA9B091CB9987A00BEC2A5 /* SocialClockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AA9B081CB9987A00BEC2A5 /* SocialClockData.swift */; };
@@ -43,6 +44,7 @@
 		D684C9C21CCD786100943C16 /* AllHandsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllHandsView.swift; sourceTree = "<group>"; };
 		D684C9C51CCDB14300943C16 /* AddMemberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMemberViewController.swift; sourceTree = "<group>"; };
 		D691E8181CD05098008BA17B /* ObservingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservingVC.swift; sourceTree = "<group>"; };
+		D697F22E1EDCAFE500638AFA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D6AA9B001CB96F3700BEC2A5 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D6AA9B061CB986AB00BEC2A5 /* ClockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockData.swift; sourceTree = "<group>"; };
 		D6AA9B081CB9987A00BEC2A5 /* SocialClockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialClockData.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		D600CEE51CA354F3004325A9 /* aking_finalproject */ = {
 			isa = PBXGroup;
 			children = (
+				D697F22E1EDCAFE500638AFA /* GoogleService-Info.plist */,
 				D600CEE61CA354F3004325A9 /* AppDelegate.swift */,
 				D684C9C21CCD786100943C16 /* AllHandsView.swift */,
 				D600CEF81CA356BA004325A9 /* MyHandsView.swift */,
@@ -190,6 +193,7 @@
 			files = (
 				D600CEF11CA354F3004325A9 /* LaunchScreen.storyboard in Resources */,
 				D600CEEE1CA354F3004325A9 /* Assets.xcassets in Resources */,
+				D697F22F1EDCAFE500638AFA /* GoogleService-Info.plist in Resources */,
 				D6AA9B111CBAEC3F00BEC2A5 /* TestLocations.gpx in Resources */,
 				D600CEEC1CA354F3004325A9 /* Main.storyboard in Resources */,
 			);

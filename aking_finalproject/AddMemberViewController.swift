@@ -20,12 +20,13 @@ class AddMemberViewController : ObservingTVC {
         }
         if let index = selectedRow {
             let user = users[index]
-            guard let name = user["name"] as? String, let location = user["location"] as? Int else {
+            /*guard let name = user["name"] as? String, let location = user["location"] as? Int else {
                 errorAlert("User data at row \(index) is missing or wrong type")
                 return
             }
             let userInfo = UserInfo(currentLocation : LocationType(rawValue: location)!, name : name, objID : user.objectId!)
-            model.addUser(membersRow, data: userInfo)
+            model.addUser(membersRow, data: userInfo) */
+            print(user)
             navigationController?.popViewController(animated: true)
         } else {
             preconditionFailure("row not selected- how did add button get enabled?")
@@ -41,10 +42,11 @@ class AddMemberViewController : ObservingTVC {
     
     // delete this later
     func deleteFromDatabase(_ id : String) {
-        let query = PFQuery(className: "aking_UserInfo")
+        print("deleting from Parse... not!")
+        /*let query = PFQuery(className: "aking_UserInfo")
         query.getObjectInBackground(withId: id) { (user, error) -> Void in
             user?.deleteEventually()
-        }
+        }*/
     }
     
     override func viewDidLoad() {
@@ -85,10 +87,12 @@ class AddMemberViewController : ObservingTVC {
 
     }
     
-    var users = [PFObject]()
+//    var users = [PFObject]()
+    var users = [UserInfo]()
     
     func reloadDataFromParse() {
-        let query = PFQuery(className: "aking_UserInfo")
+        print ("Reloading data from Parse... not!")
+        /*let query = PFQuery(className: "aking_UserInfo")
         
         // All this nice packaging is STILL on the background network thread
         query.findObjectsInBackground { [weak self] (objects, error) -> Void in
@@ -113,7 +117,7 @@ class AddMemberViewController : ObservingTVC {
                 s.tableView.reloadData()
             
             }
-        }
+        }*/
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -130,10 +134,12 @@ class AddMemberViewController : ObservingTVC {
         }
         let row = indexPath.row
         let user = users[row]
-        guard let name = user["name"] as? String else {
+        /*guard let name = user["name"] as? String else {
             errorAlert("User data at row \(row) is missing or wrong type")
             return cell
-        }
+        }*/
+        let name = "Parse Fix"
+        print(user)
         cell.tag = row
         cell.textLabel!.text = name
         return cell
