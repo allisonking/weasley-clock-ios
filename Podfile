@@ -2,4 +2,5 @@
 target "aking_finalproject" do
        pod 'Firebase/Core'
        pod 'Firebase/Database'
+       pod 'Firebase/Auth'
 end
