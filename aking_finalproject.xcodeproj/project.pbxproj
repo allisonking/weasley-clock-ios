@@ -20,6 +20,7 @@
 		D684C9C61CCDB14300943C16 /* AddMemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D684C9C51CCDB14300943C16 /* AddMemberViewController.swift */; };
 		D691E8191CD05098008BA17B /* ObservingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D691E8181CD05098008BA17B /* ObservingVC.swift */; };
 		D697F22F1EDCAFE500638AFA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D697F22E1EDCAFE500638AFA /* GoogleService-Info.plist */; };
+		D697F2321EDCBA7C00638AFA /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D697F2311EDCBA7B00638AFA /* SignInViewController.swift */; };
 		D6AA9B011CB96F3700BEC2A5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AA9B001CB96F3700BEC2A5 /* MapViewController.swift */; };
 		D6AA9B071CB986AB00BEC2A5 /* ClockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AA9B061CB986AB00BEC2A5 /* ClockData.swift */; };
 		D6AA9B091CB9987A00BEC2A5 /* SocialClockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AA9B081CB9987A00BEC2A5 /* SocialClockData.swift */; };
@@ -45,6 +46,8 @@
 		D684C9C51CCDB14300943C16 /* AddMemberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMemberViewController.swift; sourceTree = "<group>"; };
 		D691E8181CD05098008BA17B /* ObservingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservingVC.swift; sourceTree = "<group>"; };
 		D697F22E1EDCAFE500638AFA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D697F2301EDCB41F00638AFA /* aking_finalproject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = aking_finalproject.entitlements; sourceTree = "<group>"; };
+		D697F2311EDCBA7B00638AFA /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		D6AA9B001CB96F3700BEC2A5 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D6AA9B061CB986AB00BEC2A5 /* ClockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockData.swift; sourceTree = "<group>"; };
 		D6AA9B081CB9987A00BEC2A5 /* SocialClockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialClockData.swift; sourceTree = "<group>"; };
@@ -99,6 +102,7 @@
 		D600CEE51CA354F3004325A9 /* aking_finalproject */ = {
 			isa = PBXGroup;
 			children = (
+				D697F2301EDCB41F00638AFA /* aking_finalproject.entitlements */,
 				D697F22E1EDCAFE500638AFA /* GoogleService-Info.plist */,
 				D600CEE61CA354F3004325A9 /* AppDelegate.swift */,
 				D684C9C21CCD786100943C16 /* AllHandsView.swift */,
@@ -116,6 +120,7 @@
 				D6AA9B0A1CB998E800BEC2A5 /* Messages.swift */,
 				D684C9C01CCD16A000943C16 /* UserInfo.swift */,
 				D691E8181CD05098008BA17B /* ObservingVC.swift */,
+				D697F2311EDCBA7B00638AFA /* SignInViewController.swift */,
 			);
 			path = aking_finalproject;
 			sourceTree = "<group>";
@@ -165,6 +170,11 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 52LGYJ46JX;
 						LastSwiftMigration = 0820;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -257,6 +267,7 @@
 				D684C9C61CCDB14300943C16 /* AddMemberViewController.swift in Sources */,
 				D600CEE91CA354F3004325A9 /* ClockViewController.swift in Sources */,
 				D6AA9B091CB9987A00BEC2A5 /* SocialClockData.swift in Sources */,
+				D697F2321EDCBA7C00638AFA /* SignInViewController.swift in Sources */,
 				D600CEF91CA356BA004325A9 /* MyHandsView.swift in Sources */,
 				D6AA9B0B1CB998E800BEC2A5 /* Messages.swift in Sources */,
 				D600CEE71CA354F3004325A9 /* AppDelegate.swift in Sources */,
@@ -386,6 +397,7 @@
 			baseConfigurationReference = 3DBDEDC5F4E4B765C77D6C96 /* Pods-aking_finalproject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = aking_finalproject/aking_finalproject.entitlements;
 				INFOPLIST_FILE = aking_finalproject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "e65.assignment.aking-finalproject";
@@ -400,6 +412,7 @@
 			baseConfigurationReference = 187D8486098E61B61E95CE79 /* Pods-aking_finalproject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = aking_finalproject/aking_finalproject.entitlements;
 				INFOPLIST_FILE = aking_finalproject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "e65.assignment.aking-finalproject";

@@ -75,6 +75,7 @@ let numLocations = 6 // including travel and unknown- should be the same size as
 let currentLocationKey = "currentLocation"
 class ClockData : NSObject, NSCoding {
     var ref: DatabaseReference!
+    var firebaseUser : User?
     var myUserInfo : UserInfo?
     //let obj = PFObject(className: "aking_UserInfo")
     fileprivate var locations : [LocationInfo?] = Array(repeating: nil, count: numLocations)
@@ -83,6 +84,12 @@ class ClockData : NSObject, NSCoding {
     var currentLocation : LocationType = .unknown {
         didSet {
             NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: Messages.UserLocationChanged), object: self))
+            self.firebaseUser = Auth.auth().currentUser!
+            Auth.auth().addStateDidChangeListener { auth, user in
+                guard let user = user else { return }
+                self.firebaseUser = user
+            }
+
             // see if there is user info existing
             if let info = myUserInfo {
                 // if there is user info, then update it in parse
@@ -115,17 +122,14 @@ class ClockData : NSObject, NSCoding {
                 //obj.setValue(currentLocation.rawValue, forKey: "location")
                 //obj.setValue("Tester", forKey: "name")
                 ref = Database.database().reference(withPath: "user-info")
-                let userInfo = UserInfo(currentLocation: currentLocation, name: "Me", objID: "Me")
-                let userInfoRef = self.ref.child(userInfo.name)
+                
+                let userInfo = UserInfo(currentLocation: currentLocation, name: self.firebaseUser!.uid, objID: self.firebaseUser!.uid)
+                let userInfoRef = ref.child(userInfo.name)
                 userInfoRef.setValue(userInfo.propertyListRepresentation())
-                do {
                     //try obj.save()
-//                    myUserInfo = UserInfo(currentLocation: currentLocation, name: "Tester", objID: obj.objectId!)
-                    myUserInfo = UserInfo(currentLocation: currentLocation, name: "Tester", objID: "Me")
-                }
-                catch let e as NSError {
-                    print(e.localizedDescription)
-                }
+//              myUserInfo = UserInfo(currentLocation: currentLocation, name: "Tester", objID: obj.objectId!)
+                    myUserInfo = UserInfo(currentLocation: currentLocation, name: self.firebaseUser!.email!, objID: self.firebaseUser!.uid)
+
 
             }
         }
